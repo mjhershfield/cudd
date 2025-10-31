@@ -1,3 +1,5 @@
+# include(CMakePrintHelpers)
+
 set(DDDMP_PUBLIC_HEADERS
 "${CMAKE_CURRENT_SOURCE_DIR}/dddmp.h"
 )
@@ -26,15 +28,19 @@ else()
 endif()
 
 target_include_directories(dddmp PUBLIC
-  $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/cudd>
-  $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/epd>
-  $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/mtr>
-  $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/st>
-  $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/util>
-  $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/dddmp>
-  $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}>
-  $<INSTALL_INTERFACE:include/cudd>
+  ../cudd
+  ../epd
+  ../mtr
+  ../st
+  ../util
+  ../dddmp
+  ${CMAKE_CURRENT_BINARY_DIR}/..
 )
+
+# cmake_print_properties(
+#   TARGETS dddmp 
+#   PROPERTIES INCLUDE_DIRECTORIES
+# )
 
 set_target_properties(cudd PROPERTIES
   VERSION ${PROJECT_VERSION}
