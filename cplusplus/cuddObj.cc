@@ -336,6 +336,50 @@ DD::NodeReadIndex() const
 
 } // DD::NodeReadIndex
 
+unsigned int DD::GetNumVariables()
+{
+    return this->manager()->size;
+}
+
+unsigned int DD::GetNumSupportingVariables()
+{
+    /* 
+   *  Take the union of the supports of each output function.
+   *  skip NULL functions.
+   *  Set permids and invpermids of support variables to the proper values.
+   */
+
+	unsigned int num_supp_vars = 0;
+
+    DdNode* support = Cudd_Support(this->manager(), this->node);
+	if (support == NULL) {
+		return 0;
+	}
+    cuddRef(support);
+    DdNode* scan = support;
+    while (!cuddIsConstant(scan)) {
+		if (scan->index >= 0)
+		{
+			num_supp_vars++;
+		}
+//       ids[scan->index] = scan->index;
+//       permids[scan->index] = ddMgr->perm[scan->index];
+//       invpermids[ddMgr->perm[scan->index]] = scan->index;
+      scan = cuddT (scan);
+    }
+    Cudd_RecursiveDeref (this->manager(), support);
+
+//   /*
+//    *  Set supportids to incremental (shrinked) values following the ordering.
+//    */
+
+//   for (i=0, var=0; i<nVars; i++) {
+//     if (invpermids[i] >= 0) {
+//       supportids[invpermids[i]] = var++;
+//     }
+//   }
+	return num_supp_vars;
+}
 
 // ---------------------------------------------------------------------------
 // Members of class ABDD

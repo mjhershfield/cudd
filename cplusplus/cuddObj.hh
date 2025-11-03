@@ -102,6 +102,8 @@ public:
     int nodeCount() const;
     unsigned int NodeReadIndex() const;
 
+    unsigned int GetNumVariables();
+    unsigned int GetNumSupportingVariables();
 }; // DD
 
 
